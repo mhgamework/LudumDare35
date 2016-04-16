@@ -5,76 +5,57 @@ using System.Linq;
 
 public class NotePlayer : MonoBehaviour
 {
-    
+
     [SerializeField]
-    private List<AudioSource> sources;
+    public MultiVoiceAudioSource audioSource;
 
-    private AudioClip[] clips;
+    public float bpm = 120;
 
-    public float bpm = 60;
+    public List<Track> tracks;
 
     // Use this for initialization
     void Start()
     {
-        clips = Enumerable.Range(1, 8).Select(i => Resources.Load<AudioClip>("Audio/Piano/" + i.ToString())).ToArray();
-        foreach (var audioSource in sources)
-        {
-            audioSource.Stop();
-            audioSource.loop = false;
-        }
-        
-
-        StartCoroutine(playNotes().GetEnumerator());
-    }
-
-    private IEnumerable<YieldInstruction> playNotes()
-    {
-        var current = 0;
-        for (;;)
-        {
-            PlayNote(current);
-            current = (current + 1)%8;
-            yield return new WaitForSeconds(1 / (bpm / 60));
-        }
 
     }
 
 
+    private float notesSentUntil = -1; // Excluding this exact timestamp
+
+    private float maxSendInterval = 0.3f;
 
     // Update is called once per frame
     void Update()
     {
 
-    }
-
-    public void PlayNote(int num)
-    {
-        if (sources.Count == 0) return;
-        AudioSource bestToKill = sources[0];
-        var factor = float.MaxValue;
-        foreach (var src in sources)
+        var time = Time.realtimeSinceStartup;
+        if (notesSentUntil < 0)
         {
-            if (!src.isPlaying)
-            {
-                src.clip = clips[num];
-                src.Play();
-                return;
-            }
-
-            var timeLeft = src.clip.length - src.time;
-            if (timeLeft < factor)
-            {
-                factor = timeLeft;
-                bestToKill = src;
-            }
+            notesSentUntil = time;
+            return;
+        }
+        if (time - notesSentUntil > maxSendInterval)
+        {
+            Debug.Log("Frame to slow or game was paused, skipping notes");
+            notesSentUntil = time - maxSendInterval;
         }
 
 
-        bestToKill.Stop();
-        bestToKill.clip = clips[num];
-        bestToKill.Play();
+        var timeToBeats = bpm/60;
 
 
+        //TODO: maybe use playscheduled
+
+        foreach (var track in tracks)
+        {
+            foreach (var note in track.getNotesForInterval(notesSentUntil*timeToBeats, time * timeToBeats))
+            {
+                audioSource.PlayNote(note.clip);
+                Debug.Log("Play Note");
+            }
+
+            notesSentUntil = time;
+        }
 
     }
 }

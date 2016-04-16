@@ -28,6 +28,9 @@ public class MultiVoiceAudioSource: MonoBehaviour
 
     }
 
+    private float lastStutterWarning = 0;
+    private float timeBetweenStutterWarning = 0.25f;
+
     public void PlayNote(AudioClip clip)
     {
         if (sources.Count == 0) return;
@@ -54,7 +57,12 @@ public class MultiVoiceAudioSource: MonoBehaviour
         bestToKill.Stop();
         bestToKill.clip = clip;
         bestToKill.Play();
-
+        if (Time.realtimeSinceStartup > lastStutterWarning + timeBetweenStutterWarning)
+        {
+            Debug.Log("Stuttering! Seconds left: " + factor);
+            lastStutterWarning = Time.realtimeSinceStartup;
+        }
+        
 
 
     }

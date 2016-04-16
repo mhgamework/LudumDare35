@@ -1,7 +1,9 @@
-﻿namespace Assets.Source
+﻿using UnityEngine;
+
+namespace Assets.Source
 {
-    public class Note
+    public class Note : ScriptableObject
     {
-         
+        public AudioClip clip;
     }
 }
