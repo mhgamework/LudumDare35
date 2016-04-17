@@ -1,0 +1,21 @@
+PJNM("LD35")
+SMRT(1)
+FRRT(0)
+SASI(3)
+SNTY("WAV")
+PUSQ(0)
+TKSQ(0)
+TKLS{
+  TRAK{
+    TKNM("Track0.txt")
+    TKIN(0)
+    TKDS{
+      FILE{
+        VLTY("FAT-32")
+        VLNM("XXXXXX")
+        DSNM("Track0.txt")
+      }
+    }
+  }
+}
+#
