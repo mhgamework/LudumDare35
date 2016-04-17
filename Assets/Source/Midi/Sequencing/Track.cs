@@ -1,3 +1,4 @@
+
 /*
  * Created by: Leslie Sanford
  * 
@@ -8,20 +9,22 @@
 
 using System;
 using System.Collections;
+using System.Collections.Generic;
+using System.Linq;
 
 namespace Multimedia.Midi
 {
-	/// <summary>
-	/// Represents a collection of Midi events.
-	/// </summary>
-	public class Track : ICloneable
-	{
+    /// <summary>
+    /// Represents a collection of Midi events.
+    /// </summary>
+    public class Track : ICloneable, IEnumerable<MidiEvent>
+    {
         #region Track Members
 
         #region Fields
 
         // Midi event list.
-        private ArrayList MidiEvents = new ArrayList();
+        private List<MidiEvent> MidiEvents = new List<MidiEvent>();
 
         // Indicates whether or not the track is muted.
         private bool mute = false;
@@ -42,8 +45,8 @@ namespace Multimedia.Midi
         /// </summary>
         public Track()
         {
-        }       
- 
+        }
+
         /// <summary>
         /// Initializes a new instance of the Track class with another instance
         /// of the Track class.
@@ -54,9 +57,9 @@ namespace Multimedia.Midi
         public Track(Track trk)
         {
             // Copy events from the existing track into this one.
-            foreach(MidiEvent e in trk.MidiEvents)
+            foreach (MidiEvent e in trk.MidiEvents)
             {
-                this.MidiEvents.Add(e.Clone());
+                this.MidiEvents.Add((MidiEvent) e.Clone());
             }
         }
 
@@ -74,8 +77,8 @@ namespace Multimedia.Midi
         {
             MidiEvents.Add(e);
             version++;
-        }       
- 
+        }
+
         /// <summary>
         /// Inserts a MidiEvent into the Track at the specified index.
         /// </summary>
@@ -92,7 +95,7 @@ namespace Multimedia.Midi
         public void Insert(int index, MidiEvent e)
         {
             // Enforce preconditions.
-            if(index < 0 || index >= Count)
+            if (index < 0 || index >= Count)
                 throw new ArgumentOutOfRangeException("index", index,
                     "Index into track out of range.");
 
@@ -129,7 +132,7 @@ namespace Multimedia.Midi
         public void RemoveAt(int index)
         {
             // Enforce preconditions.
-            if(index < 0 || index >= Count)
+            if (index < 0 || index >= Count)
                 throw new ArgumentOutOfRangeException("index", index,
                     "Index into track out of range.");
 
@@ -137,7 +140,7 @@ namespace Multimedia.Midi
 
             // Indicate that the track has changed.
             version++;
-        }        
+        }
 
         /// <summary>
         /// Slides events forwards or backwards at the specified index in the 
@@ -166,17 +169,17 @@ namespace Multimedia.Midi
         public void Slide(int index, int slideAmount)
         {
             // Enforce preconditions.
-            if(index < 0 || index >= Count)
+            if (index < 0 || index >= Count)
                 throw new ArgumentOutOfRangeException("index", index,
                     "Index into track out of range.");
 
             MidiEvent e = (MidiEvent)MidiEvents[index];
 
             // Enforce preconditions.
-            if(e.Ticks + slideAmount < 0)
+            if (e.Ticks + slideAmount < 0)
                 throw new ArgumentOutOfRangeException("slideAmount", slideAmount,
                     "Slide amount out of range.");
-            
+
             // Slide MidiEvent ticks value by the slide amount.
             e.Ticks += slideAmount;
 
@@ -199,7 +202,7 @@ namespace Multimedia.Midi
 
             // Calculate the length of the track by summing the ticks value of 
             // every Midi event in the track.
-            foreach(MidiEvent e in MidiEvents)
+            foreach (MidiEvent e in MidiEvents)
             {
                 length += e.Ticks;
             }
@@ -224,7 +227,7 @@ namespace Multimedia.Midi
             Track trkA = new Track(trackA);
             Track trkB = new Track(trackB);
             Track mergedTrack = new Track();
-            int a = 0, b = 0; 
+            int a = 0, b = 0;
 
             //
             // The following algorithm merges two Midi tracks together. It 
@@ -233,12 +236,12 @@ namespace Multimedia.Midi
             //
 
             // While neither the end of track A or track B has been reached.
-            while(a < trkA.Count - 1 && b < trkB.Count - 1)
+            while (a < trkA.Count - 1 && b < trkB.Count - 1)
             {
                 // While the end of track A has not been reached and the 
                 // current Midi event in track A comes before the current Midi
                 // event in track B.
-                while(a < trkA.Count - 1 && trkA[a].Ticks <= trkB[b].Ticks)
+                while (a < trkA.Count - 1 && trkA[a].Ticks <= trkB[b].Ticks)
                 {
                     // Slide the events in track B backwards by the amount of
                     // ticks in the current event in track A. This keeps both
@@ -253,12 +256,12 @@ namespace Multimedia.Midi
                 }
 
                 // If the end of track A has not yet been reached.
-                if(a < trkA.Count - 1)
+                if (a < trkA.Count - 1)
                 {
                     // While the end of track B has not been reached and the 
                     // current Midi event in track B comes before the current Midi
                     // event in track A.
-                    while(b < trkB.Count - 1 && trkB[b].Ticks < trkA[a].Ticks)
+                    while (b < trkB.Count - 1 && trkB[b].Ticks < trkA[a].Ticks)
                     {
                         // Slide the events in track A backwards by the amount of
                         // ticks in the current event in track B. This keeps both
@@ -273,28 +276,28 @@ namespace Multimedia.Midi
                     }
                 }
             }
-            
+
             // If the end of track A has not yet been reached.
-            if(a < trkA.Count - 1)
+            if (a < trkA.Count - 1)
             {
                 // Add the rest of the events in track A to the merged track.
-                while(a < trkA.Count)
+                while (a < trkA.Count)
                 {
                     mergedTrack.Add(trkA[a]);
                     a++;
                 }
             }
             // Else if the end of track B has not yet been reached.
-            else if(b < trkB.Count - 1)
+            else if (b < trkB.Count - 1)
             {
                 // Add the rest of the events in track B to the merged track.
-                while(b < trkB.Count)
+                while (b < trkB.Count)
                 {
                     mergedTrack.Add(trkB[b]);
                     b++;
                 }
             }
-            
+
             return mergedTrack;
         }
 
@@ -396,5 +399,15 @@ namespace Multimedia.Midi
         }
 
         #endregion
+
+        public IEnumerator<MidiEvent> GetEnumerator()
+        {
+            return MidiEvents.GetEnumerator();
+        }
+
+        IEnumerator IEnumerable.GetEnumerator()
+        {
+            return MidiEvents.GetEnumerator();
+        }
     }
 }

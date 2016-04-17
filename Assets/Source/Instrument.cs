@@ -15,7 +15,8 @@ namespace Assets.Source
         private Note[] notes;
 
 
-        private int lowestNoteNum = 60 - 2 * 12;
+        private int lowestNoteNum = 0;//60 - 1 * 12;
+        private int numOctaves = 7;
 
         public Instrument()
         {
@@ -31,7 +32,7 @@ namespace Assets.Source
         {
             if (notes != null) return;
 
-            notes = Enumerable.Range(0, 12 * 4).Select(i => extractSample(Samples, i * 0.5f, 0.5f, 90))
+            notes = Enumerable.Range(0, 12 * numOctaves).Select(i => extractSample(Samples, i * 0.5f, 0.5f, 90))
                 .Select(c => new Note() { clip = c })
                 .ToArray();
         }
@@ -55,7 +56,16 @@ namespace Assets.Source
         public Note GetNote(int code)
         {
             Initialize();
-            return notes[code - lowestNoteNum];
+
+            code -= lowestNoteNum;
+            if (code < 0 || code >= notes.Length)
+            {
+                Debug.Log("Note out of range! " + (code + lowestNoteNum));
+                return notes[0];
+            }
+            
+
+            return notes[code ];
         }
 
 
