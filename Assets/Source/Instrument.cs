@@ -17,10 +17,10 @@ namespace Assets.Source
 
         public void Start()
         {
-            initialize();
+            Initialize();
         }
 
-        private void initialize()
+        public void Initialize()
         {
             if (notes != null) return;
             notes = Enumerable.Range(0, 8)
@@ -31,8 +31,8 @@ namespace Assets.Source
 
         public Note GetNote(int code)
         {
-            initialize();
-            return notes[code];
+            Initialize();
+                return notes[code];
         }
 
 

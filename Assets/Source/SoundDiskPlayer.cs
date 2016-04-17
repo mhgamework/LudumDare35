@@ -9,19 +9,19 @@ namespace Assets.Source
     {
         [SerializeField]
         private List<AFloatParameter> values;
+        [SerializeField]
+        [Tooltip("Indices of the notes, ordered low to high (in the order they appear on the sounddisc). Negative values are muted.")]
+        private int[] noteIndices = new int[0];
+
         public NotePlayer player;
-
         private Track track;
-        private Note[] notes;
 
-        [SerializeField] private Instrument instrument;
+        [SerializeField]
+        private Instrument instrument;
 
         public void Start()
         {
-            notes = Enumerable.Range(0, 8)
-                .Select(i => Resources.Load<AudioClip>("Audio/Piano/" + i.ToString()))
-                .Select(c => new Note() { clip = c })
-                .ToArray();
+            instrument.Initialize();
 
             if (track == null)
             {
@@ -29,31 +29,26 @@ namespace Assets.Source
                 player.tracks.Add(track);
             }
 
-            track.melody = new Melody(4);
+            track.melody = new Melody(values.Count);
 
-
-        }
-
-        public void OnValidate()
-        {
             foreach (var val in values)
             {
-                if (val == null) continue;
-                Debug.Log(val);
                 val.RegisterObserver(this);
             }
         }
 
-
-
         public void NotifyParameterChanged(AFloatParameter parameter, float value)
         {
-            if (track == null) return;
-            var note_index = (int) Mathf.Floor((value/100)*7);
+            if (track == null || noteIndices.Length == 0) return;
+            var note_index = noteIndices[Mathf.FloorToInt((value / 100) * noteIndices.Length)];
 
-            //track.melody.SetNote(values.IndexOf(parameter), notes[note_index]);
+            if (note_index < 0)
+            {
+                track.melody.SetNote(values.IndexOf(parameter), null);
+                return;
+            }
 
-            track.melody.SetNote(values.IndexOf(parameter),  instrument.GetNote(note_index));
+            track.melody.SetNote(values.IndexOf(parameter), instrument.GetNote(note_index));
         }
     }
 }
