@@ -2,6 +2,7 @@
 using System.Collections;
 using System.Collections.Generic;
 using System.Linq;
+using System;
 
 public class MultiVoiceAudioSource: MonoBehaviour
 {
@@ -31,7 +32,15 @@ public class MultiVoiceAudioSource: MonoBehaviour
     private float lastStutterWarning = 0;
     private float timeBetweenStutterWarning = 0.25f;
 
-    public void PlayNote(AudioClip clip)
+    public void PlaySample(AudioClip clip)
+    {
+        PlaySample(clip, 0, clip.length);
+      
+
+
+    }
+
+    public void PlaySample(AudioClip clip, float start, float end)
     {
         if (sources.Count == 0) return;
         AudioSource bestToKill = sources[0];
@@ -41,6 +50,7 @@ public class MultiVoiceAudioSource: MonoBehaviour
             if (!src.isPlaying)
             {
                 src.clip = clip;
+                
                 src.Play();
                 return;
             }
@@ -62,8 +72,6 @@ public class MultiVoiceAudioSource: MonoBehaviour
             Debug.Log("Stuttering! Seconds left: " + factor);
             lastStutterWarning = Time.realtimeSinceStartup;
         }
-        
-
 
     }
 }

@@ -51,7 +51,7 @@ namespace Assets.Source
             var note = instrument.GetNote(note_index);
             if (note != prevFeedbackedNote)
             {
-                player.audioSource.PlayNote(note.clip); //play note instantly for user feedback
+                player.audioSource.PlaySample(note.clip); //play note instantly for user feedback
                 prevFeedbackedNote = note;
             }
 

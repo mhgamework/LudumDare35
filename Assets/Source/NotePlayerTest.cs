@@ -41,21 +41,21 @@ namespace Assets.Source
         public void Update()
         {
             if (Input.GetKeyDown(KeyCode.Keypad1))
-                player.audioSource.PlayNote(notes[0].clip);
+                player.audioSource.PlaySample(notes[0].clip);
             if (Input.GetKeyDown(KeyCode.Keypad2))
-                player.audioSource.PlayNote(notes[1].clip);
+                player.audioSource.PlaySample(notes[1].clip);
             if (Input.GetKeyDown(KeyCode.Keypad3))
-                player.audioSource.PlayNote(notes[2].clip);
+                player.audioSource.PlaySample(notes[2].clip);
             if (Input.GetKeyDown(KeyCode.Keypad4))
-                player.audioSource.PlayNote(notes[3].clip);
+                player.audioSource.PlaySample(notes[3].clip);
             if (Input.GetKeyDown(KeyCode.Keypad5))
-                player.audioSource.PlayNote(notes[4].clip);
+                player.audioSource.PlaySample(notes[4].clip);
             if (Input.GetKeyDown(KeyCode.Keypad6))
-                player.audioSource.PlayNote(notes[5].clip);
+                player.audioSource.PlaySample(notes[5].clip);
             if (Input.GetKeyDown(KeyCode.Keypad7))
-                player.audioSource.PlayNote(notes[6].clip);
+                player.audioSource.PlaySample(notes[6].clip);
             if (Input.GetKeyDown(KeyCode.Keypad8))
-                player.audioSource.PlayNote(notes[7].clip);
+                player.audioSource.PlaySample(notes[7].clip);
         }
 
     }

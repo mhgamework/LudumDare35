@@ -2,6 +2,7 @@
 using System.Collections;
 using System.Collections.Generic;
 using System.Linq;
+using Assets.Source;
 
 public class NotePlayer : MonoBehaviour
 {
@@ -51,7 +52,7 @@ public class NotePlayer : MonoBehaviour
         {
             foreach (var note in track.getNotesForInterval(notesSentUntil * timeToBeats, time * timeToBeats))
             {
-                audioSource.PlayNote(note.clip);
+                PlayNote(note);
                 //Debug.Log("Play Note");
             }
 
@@ -59,6 +60,11 @@ public class NotePlayer : MonoBehaviour
 
         notesSentUntil = time;
 
+    }
+
+    public void PlayNote(Note note)
+    {
+        audioSource.PlaySample(note.clip);
     }
 
     public int GetBeatsPerMeasure()
