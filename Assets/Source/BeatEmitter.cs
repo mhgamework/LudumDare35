@@ -43,6 +43,9 @@ public class BeatEmitter : MonoBehaviour
 
         var current_beat = player.EstimateCurrentBeat() * BeatValue * 0.25f;
         var current_beat_value = Mathf.FloorToInt(current_beat);// - (current_beat % (float)BeatValue));
+
+        //Debug.Log(current_beat_value);
+
         if (current_beat_value != prevBeatValue)
         {
             prevBeatValue = current_beat_value; //keep in mind that beat not necessarily increments (we may play backwards for instance, or do some scrubbing in the player)

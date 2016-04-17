@@ -18,6 +18,8 @@ namespace Assets.Source
         [SerializeField]
         private Instrument instrument;
 
+        public Color BleepColor = Color.blue;
+
         public NotePlayer player;
 
         private Dictionary<AFloatParameter, SoundDiscEntry> entryMap = new Dictionary<AFloatParameter, SoundDiscEntry>();
@@ -56,6 +58,11 @@ namespace Assets.Source
             }
 
             entry.SetNote(note);
+        }
+
+        public bool OwnsEntry(SoundDiscEntry entry)
+        {
+            return entries.Contains(entry);
         }
     }
 }
