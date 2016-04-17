@@ -27,7 +27,16 @@ public class SoundDiscMelody : MonoBehaviour
 
     void Start()
     {
-        melody = new Melody(noteControllers.Length);
+        TryInitialize();
+    }
+
+    private void TryInitialize()
+    {
+        if (melody != null)
+            return;
+
+        melody = gameObject.AddComponent<Melody>();
+        melody.SetLength(noteControllers.Length);
 
         track = new Track();
         track.melody = melody;
@@ -47,6 +56,8 @@ public class SoundDiscMelody : MonoBehaviour
     /// <returns></returns>
     public List<Color> GetTrackColors()
     {
+        TryInitialize();
+
         var color_list = new List<Color>();
 
         var last_color = Color.magenta;
@@ -65,6 +76,12 @@ public class SoundDiscMelody : MonoBehaviour
         }
 
         return color_list;
+    }
+
+    public void Mute(bool mute)
+    {
+        TryInitialize();
+        melody.Mute = mute;
     }
 
     private void OnBeatChanged(int beat_number)

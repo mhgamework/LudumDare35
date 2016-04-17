@@ -14,11 +14,12 @@ namespace Assets.Source
         {
             notes = Enumerable.Range(0, 8)
                 .Select(i => Resources.Load<AudioClip>("Audio/Piano/" + i.ToString()))
-                .Select(c => new Note() { clip = c})
+                .Select(c => new Note() { clip = c })
                 .ToArray();
 
 
-            var m = new Melody(8);
+            var m = gameObject.AddComponent<Melody>();
+            m.SetLength(8);
             var ip = 0;
             foreach (var n in notes)
             {
@@ -27,7 +28,8 @@ namespace Assets.Source
             }
 
 
-            m = new Melody(8);
+            m = gameObject.AddComponent<Melody>();
+            m.SetLength(8);
 
             m.SetNote(0, notes[5]);
             m.SetNote(2, notes[3]);

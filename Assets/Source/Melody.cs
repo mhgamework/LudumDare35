@@ -3,10 +3,11 @@ using UnityEngine;
 
 namespace Assets.Source
 {
-    public class Melody
+    public class Melody : MonoBehaviour
     {
+        public bool Mute;
 
-        public Melody( int length)
+        public void SetLength(int length)
         {
             Length = length;
             notes = new Note[length];

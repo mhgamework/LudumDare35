@@ -17,6 +17,8 @@ public class BeatEmitter : MonoBehaviour
     [SerializeField]
     private bool initializeFromEditorAtStart = false;
 
+    public float EstimatedTimePerBeat { get { return 60f / player.bpm * 0.25f / BeatValue; } }
+
     private bool isInitialized;
     private int prevBeatValue = -1;
 

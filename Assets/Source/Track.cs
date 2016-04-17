@@ -4,7 +4,7 @@ using System.Collections.Generic;
 using System.Linq;
 using Assets.Source;
 
-public class Track 
+public class Track
 {
 
     public Melody melody;
@@ -18,21 +18,24 @@ public class Track
     /// <returns></returns>
     public IEnumerable<Note> getNotesForInterval(float start, float end)
     {
+        if (melody.Mute)
+            yield break;
+
         // Melodies are now in 1/4 of a beat
         start *= 4;
         end *= 4;
 
         var firstIncludedBeat = (int)Mathf.Ceil(start);
-        var lastIncludedBeat = (int)Mathf.Floor(end); 
+        var lastIncludedBeat = (int)Mathf.Floor(end);
 
-        if (lastIncludedBeat == end) lastIncludedBeat --; // Exclude end
+        if (lastIncludedBeat == end) lastIncludedBeat--; // Exclude end
 
         //Debug.Log(firstIncludedBeat + " - " + lastIncludedBeat);
 
         // Go over each beat
         for (int i = firstIncludedBeat; i <= lastIncludedBeat; i++)
         {
-            var note = melody.GetNote(i%melody.Length);
+            var note = melody.GetNote(i % melody.Length);
             if (note != null) yield return note;
         }
     }

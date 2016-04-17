@@ -1,8 +1,10 @@
-﻿using UnityEngine;
+﻿using System;
+using UnityEngine;
 using System.Collections;
 using System.Collections.Generic;
 using Miscellaneous.ObjectPooling;
 using UI;
+using UnityEngine.UI;
 
 public class TrackbarController : MonoBehaviour
 {
@@ -18,6 +20,9 @@ public class TrackbarController : MonoBehaviour
     private NotePlayer player = null;
 
     [SerializeField]
+    private Toggle muteToggle = null;
+
+    [SerializeField]
     private SoundDiscMelody debugMelody = null;
 
     private List<PooledObject> currentPooledObjects = new List<PooledObject>();
@@ -28,6 +33,14 @@ public class TrackbarController : MonoBehaviour
     {
         if (debugMelody != null)
             VisualizeMelody(debugMelody);
+
+        muteToggle.onValueChanged.AddListener(OnMuteToggleChanged);
+        debugMelody.Mute(muteToggle.isOn);
+    }
+
+    private void OnMuteToggleChanged(bool value)
+    {
+        debugMelody.Mute(value);
     }
 
     void Update()
