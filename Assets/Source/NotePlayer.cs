@@ -51,11 +51,12 @@ public class NotePlayer : MonoBehaviour
             foreach (var note in track.getNotesForInterval(notesSentUntil*timeToBeats, time * timeToBeats))
             {
                 audioSource.PlayNote(note.clip);
-                Debug.Log("Play Note");
+                //Debug.Log("Play Note");
             }
 
-            notesSentUntil = time;
         }
+
+        notesSentUntil = time;
 
     }
 }
