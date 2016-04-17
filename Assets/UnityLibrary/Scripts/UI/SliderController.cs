@@ -1,4 +1,5 @@
 ﻿using System.Collections;
+using Miscellaneous;
 using Miscellaneous.Easing;
 using Miscellaneous.ParameterBoxing.FloatParameter;
 using Miscellaneous.ParameterBoxing.Vector3Parameter;
@@ -23,6 +24,14 @@ namespace UI
         private string InitialName = "NAME";
         [SerializeField]
         private float InitialValue = 100f;
+
+        private float minValue, maxValue;
+
+        [SerializeField]
+        private bool Snap = false;
+        [SerializeField]
+        [ConditionalHide("Snap")]
+        private float SnapValue = 0;
 
         [SerializeField]
         private AFloatParameter ObservedFloatParameter = null;
@@ -56,6 +65,21 @@ namespace UI
                 return;
             isInitialized = true;
 
+            if (Snap)
+            {
+                if (SliderComponent.minValue < 0)
+                    SliderComponent.maxValue -= SliderComponent.minValue;
+                SliderComponent.minValue = 0;
+
+                SliderComponent.wholeNumbers = true;
+                var nb_snaps = Mathf.FloorToInt((SliderComponent.maxValue - SliderComponent.minValue) / SnapValue);
+
+                SliderComponent.maxValue = nb_snaps;
+
+                minValue = SliderComponent.minValue;
+                maxValue = SliderComponent.maxValue;
+            }
+
             scaleAnimator = GetComponent<GameObjectAnimationScale>();
             SliderComponent.onValueChanged.AddListener(newValue => OnSliderValueChanged(newValue));
 
@@ -82,7 +106,7 @@ namespace UI
         {
             return Mathf.Abs(SliderComponent.maxValue - SliderComponent.minValue);
         }
-        
+
 
         /// <summary>
         /// Sets the name of the slider to a fixed value.
@@ -115,6 +139,9 @@ namespace UI
 
         public float GetCurrentValue()
         {
+            if (Snap)
+                return SliderComponent.value * SnapValue;
+
             return SliderComponent.value;
         }
 
@@ -156,6 +183,8 @@ namespace UI
         private void OnSliderValueChanged(float newValue)
         {
             changingValueFromSlider = true;
+
+            newValue = GetCurrentValue();
 
             if (Mathf.Abs(newValue - prevValue) >= 0.01f)
             {
