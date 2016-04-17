@@ -4,7 +4,7 @@ using System.Collections.Generic;
 using System.Linq;
 using Assets.Source;
 
-public class Track : ScriptableObject
+public class Track 
 {
 
     public Melody melody;
@@ -18,6 +18,10 @@ public class Track : ScriptableObject
     /// <returns></returns>
     public IEnumerable<Note> getNotesForInterval(float start, float end)
     {
+        // Melodies are now in 1/4 of a beat
+        start *= 4;
+        end *= 4;
+
         var firstIncludedBeat = (int)Mathf.Ceil(start);
         var lastIncludedBeat = (int)Mathf.Floor(end); 
 

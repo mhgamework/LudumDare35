@@ -65,6 +65,9 @@ namespace UI
                 return;
             isInitialized = true;
 
+            var value_relative = (InitialValue - SliderComponent.minValue) /
+                                 (SliderComponent.maxValue - SliderComponent.minValue);
+
             if (Snap)
             {
                 if (SliderComponent.minValue < 0)
@@ -84,14 +87,23 @@ namespace UI
             SliderComponent.onValueChanged.AddListener(newValue => OnSliderValueChanged(newValue));
 
             NameLabel.text = InitialName;
-            SetValue(InitialValue);
 
-            OnSliderValueChanged(InitialValue); //force update
+            SetValueRelative(value_relative);
+
+            changingValueFromSlider = true;
 
             if (ObservedFloatParameter != null)
+            {
                 ObservedFloatParameter.RegisterObserver(this);
+                ObservedFloatParameter.SetValue(GetCurrentValue());
+            }
             if (ObservedVector3Parameter != null)
+            {
                 ObservedVector3Parameter.RegisterObserver(this);
+                ObservedVector3Parameter.SetValue(GetCurrentValue());
+            }
+
+            changingValueFromSlider = false;
         }
 
         // .. OPERATIONS

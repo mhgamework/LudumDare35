@@ -3,7 +3,7 @@ using UnityEngine;
 
 namespace Assets.Source
 {
-    public class Instrument : MonoBehaviour
+    public class Instrument : ScriptableObject
     {
         public string FolderName;
 

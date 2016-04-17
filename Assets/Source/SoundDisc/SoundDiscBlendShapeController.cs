@@ -4,7 +4,10 @@ using System.Collections;
 using System.Collections.Generic;
 using Miscellaneous.ParameterBoxing.FloatParameter;
 
-public class SoundDiscController : MonoBehaviour, IFloatParameterObserver
+/// <summary>
+/// Controls the shape of a sounddisc.
+/// </summary>
+public class SoundDiscBlendShapeController : MonoBehaviour, IFloatParameterObserver
 {
     [Serializable]
     private class BlendShapeData

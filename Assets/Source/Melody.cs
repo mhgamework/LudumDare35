@@ -3,7 +3,7 @@ using UnityEngine;
 
 namespace Assets.Source
 {
-    public class Melody: ScriptableObject
+    public class Melody
     {
 
         public Melody( int length)

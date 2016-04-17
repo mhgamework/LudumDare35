@@ -28,3 +28,5 @@ expandedItems
 FailedAssetImports.txt
 guidmapper
 ScriptMapper
+/Assets/ShaderForge
+/Assets/ShaderForge.meta
