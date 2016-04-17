@@ -11,14 +11,17 @@ public class SoundDiscEntry : MonoBehaviour
     public AFloatParameter controllingParameter = null;
 
     [SerializeField]
-    private AEntryVisualizer visualizer = null;
+    private AEntryVisualizer[] visualizers = new AEntryVisualizer[0];
 
     private Note currentNote;
 
     public void OnPlayed()
     {
-        if (visualizer != null)
-            visualizer.Highlight();
+        foreach (var visualizer in visualizers)
+        {
+            if (visualizer != null)
+                visualizer.Highlight();
+        }
     }
 
     public void SetNote(Note note)
