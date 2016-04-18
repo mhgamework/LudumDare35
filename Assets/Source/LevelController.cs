@@ -8,14 +8,17 @@ namespace Assets.Source
     {
         public MelodyData MelodyData;
 
-        public void ToMainMenu()
+        public void ToMainMenu(bool success)
         {
-            GlobalState.Instance.MarkLevelCompleted(SceneManager.GetActiveScene().name, MelodyData);
+            if (success)
+                GlobalState.Instance.MarkLevelCompleted(SceneManager.GetActiveScene().name, MelodyData);
+            else
+                GlobalState.Instance.MarkLevelFailed(SceneManager.GetActiveScene().name, MelodyData);
 
 
             SceneManager.LoadScene("MainMenu", LoadSceneMode.Single);
         }
 
-     
+
     }
 }
