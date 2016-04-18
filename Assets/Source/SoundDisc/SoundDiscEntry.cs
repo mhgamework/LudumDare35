@@ -33,7 +33,9 @@ public class SoundDiscEntry : MonoBehaviour
 
     public void SetNoteByIndex(int note_index)
     {
-        AlterParameter(instrument.GetParameterValueForNote(note_index));
+        var param_value = instrument.GetParameterValueForNote(note_index);
+        if (param_value > 0)
+            AlterParameter(param_value);
     }
 
     public Note GetNote()
