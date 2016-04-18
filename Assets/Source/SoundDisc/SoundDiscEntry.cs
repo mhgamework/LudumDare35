@@ -2,6 +2,7 @@
 using System.Collections;
 using Assets.Source;
 using Miscellaneous.ParameterBoxing.FloatParameter;
+using UI;
 
 /// <summary>
 /// Represents one controllable entry of a sounddisk (eg an 8-sounddisk has 8 entries)..
@@ -9,6 +10,9 @@ using Miscellaneous.ParameterBoxing.FloatParameter;
 public class SoundDiscEntry : MonoBehaviour
 {
     public AFloatParameter controllingParameter = null;
+
+    [SerializeField]
+    public SliderController sliderController = null;
 
     [SerializeField]
     private AEntryVisualizer[] visualizers = new AEntryVisualizer[0];
@@ -51,6 +55,11 @@ public class SoundDiscEntry : MonoBehaviour
     private void AlterParameter(float new_value)
     {
         controllingParameter.SetValue(new_value);
+    }
+
+    public void SetSnapValue(float value)
+    {
+        sliderController.SetSnapValue(value);
     }
 
 }

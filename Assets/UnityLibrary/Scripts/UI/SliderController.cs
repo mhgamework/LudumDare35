@@ -234,6 +234,9 @@ namespace UI
         }
 
 
-
+        public void SetSnapValue(float value)
+        {
+            SnapValue = value;
+        }
     }
 }

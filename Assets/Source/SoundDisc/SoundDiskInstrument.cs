@@ -18,6 +18,9 @@ namespace Assets.Source
         [SerializeField]
         private Instrument instrument;
 
+        [SerializeField]
+        private bool updateSliderSnap = false;
+
         public Color BleepColor = Color.blue;
 
         public NotePlayer player;
@@ -31,6 +34,12 @@ namespace Assets.Source
 
         void Awake()
         {
+            var slider_snap_value = 100f / (noteIndices.Length - 1);
+            foreach (var soundDiscEntry in entries)
+            {
+                soundDiscEntry.SetSnapValue(slider_snap_value);
+            }
+
             foreach (var soundDiscEntry in entries)
             {
                 soundDiscEntry.SetInstrument(this);
@@ -44,11 +53,12 @@ namespace Assets.Source
             instrument.Initialize();
         }
 
+
         public void NotifyParameterChanged(AFloatParameter parameter, float value)
         {
             if (noteIndices.Length == 0) return;
-            var note_index_index = (value / 100) * noteIndices.Length;
-            var note_index = noteIndices[Mathf.FloorToInt(note_index_index)];
+            var note_index_index = (value / 100) * (noteIndices.Length - 1);
+            var note_index = noteIndices[Mathf.RoundToInt(note_index_index)];
 
             SoundDiscEntry entry;
             if (!entryMap.TryGetValue(parameter, out entry))
@@ -58,12 +68,14 @@ namespace Assets.Source
             entry.SetNote(note);
 
             if (note == null)
+            {
+                prevFeedbackedNote = null;
                 return;
+            }
 
             if (EnablePlayerSoundFeedback && note != prevFeedbackedNote)
             {
                 player.audioSource.PlaySample(note.clip); //play note instantly for user feedback
-                prevFeedbackedNote = note;
             }
         }
 
