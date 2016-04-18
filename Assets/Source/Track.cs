@@ -8,6 +8,10 @@ public class Track
 {
 
     public Melody melody;
+    public float TrackStart = 0;
+
+    public float TrackEnd = float.MaxValue;
+    public bool Mute { get; set; }
 
     /// <summary>
     /// End point is excluded, start point is included
@@ -18,8 +22,17 @@ public class Track
     /// <returns></returns>
     public IEnumerable<Note> getNotesForInterval(float start, float end)
     {
+        if (Mute)
+            yield break;
         if (melody.Mute)
             yield break;
+
+        // Apply offset
+        start -= this.TrackStart;
+        end -= this.TrackStart;
+
+        start = Mathf.Max(0, start); // Trick: move start later or end earlier, so that we only have a valid interval while inside [trackstart,trackEnd)
+        end = Mathf.Min(TrackEnd - TrackStart, end);
 
         // Melodies are now in 1/4 of a beat
         start *= 4;
@@ -35,8 +48,17 @@ public class Track
         // Go over each beat
         for (int i = firstIncludedBeat; i <= lastIncludedBeat; i++)
         {
-            var note = melody.GetNote(i % melody.Length);
+            var note = melody.GetNote(mod(i , melody.Length));
             if (note != null) yield return note;
         }
+    }
+
+    float nfmod(float a, float b)
+    {
+        return a - b * Mathf.Floor(a / b);
+    }
+    int mod(int x, int m)
+    {
+        return (x % m + m) % m;
     }
 }

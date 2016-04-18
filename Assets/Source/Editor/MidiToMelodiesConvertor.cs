@@ -11,7 +11,7 @@ using Track = Multimedia.Midi.Track;
 
 namespace Assets.Source
 {
-    public class MidiToMelodiesConvertor : MonoBehaviour, IMidiMessageVisitor
+    public class MidiToMelodiesConvertor : IMidiMessageVisitor
     {
         [SerializeField]
         private NotePlayer player;

@@ -12,10 +12,11 @@ namespace Assets.Source
         // Use this for initialization
         void Start()
         {
-            notes = Enumerable.Range(0, 8)
-                .Select(i => Resources.Load<AudioClip>("Audio/Piano/" + i.ToString()))
-                .Select(c => new Note() { clip = c })
-                .ToArray();
+            // TODO
+            //notes = Enumerable.Range(0, 8)
+            //    .Select(i => Resources.Load<AudioClip>("Audio/Piano/" + i.ToString()))
+            //    .Select(c => new Note() { clip = c })
+            //    .ToArray();
 
 
             var m = gameObject.AddComponent<Melody>();

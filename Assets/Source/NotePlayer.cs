@@ -57,9 +57,9 @@ public class NotePlayer : MonoBehaviour
 
         var currentTime = Time.realtimeSinceStartup + playOffset;
 
-        if (notesSentUntil < -999)
+        if (notesSentUntil < -999) // Init
         {
-            notesSentUntil = currentTime;
+            Scrub(0);
             return;
         }
         if (currentTime - notesSentUntil > maxSendInterval)
@@ -80,7 +80,6 @@ public class NotePlayer : MonoBehaviour
                 PlayNote(note);
                 //Debug.Log("Play Note");
             }
-
         }
 
         notesSentUntil = currentTime;
@@ -89,13 +88,12 @@ public class NotePlayer : MonoBehaviour
 
         var notesSentUntilInBeats = notesSentUntil * bpm / 60;
 
-        if (Loop && notesSentUntilInBeats + 0.08f > LoopBeats + MagicNumberBLeepBLeep)
-            Scrub(notesSentUntilInBeats - LoopBeats - MagicNumberBLeepBLeep);
+        if (Loop && notesSentUntilInBeats + 0.08f > LoopBeats)
+            Scrub(notesSentUntilInBeats - LoopBeats);
     }
 
     public void Scrub(float beat)
     {
-        beat += MagicNumberBLeepBLeep;
         playOffset = -Time.realtimeSinceStartup + beat / bpm * 60;
 
         notesSentUntil = Time.realtimeSinceStartup + playOffset;
@@ -112,11 +110,11 @@ public class NotePlayer : MonoBehaviour
 
     }
 
-    private float MagicNumberBLeepBLeep = 4;
+    //private float MagicNumberBLeepBLeep = 4;
 
     public float EstimateCurrentBeat()
     {
-        return Math.Max(0, notesSentUntil * bpm / 60 - MagicNumberBLeepBLeep);
+        return Math.Max(0, notesSentUntil * bpm / 60 );
     }
 
 
