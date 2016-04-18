@@ -50,6 +50,13 @@ public class TrackbarController : MonoBehaviour
         }
     }
 
+    public void SetLoop(bool loop)
+    {
+        Loop = loop;
+        player.Scrub(0);
+        UpdatePause();
+    }
+
     public void PlayBleeps(bool play_bleeps)
     {
         playBleeps = play_bleeps;
@@ -93,8 +100,7 @@ public class TrackbarController : MonoBehaviour
         if (displayedBeats <= 0)
             return;
 
-        if (!Loop)
-            player.Loop = false;
+        player.Loop = Loop;
 
         if (!Loop && player.EstimateCurrentBeat() >= displayedBeats - 0.01f)
         {

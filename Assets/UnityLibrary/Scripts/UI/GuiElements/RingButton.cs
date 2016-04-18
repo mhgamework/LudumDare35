@@ -27,7 +27,10 @@ namespace UI.GuiElements
 
         [SerializeField]
         private bool StartSelected = true;
-        
+
+        [SerializeField]
+        private bool DeselectWithClick = true;
+
         private bool isSelected;
         private GameObjectAnimationScale ringScaleAnimator;
         private GameObjectAnimationColor centerColorAnimator;
@@ -56,10 +59,18 @@ namespace UI.GuiElements
 
         public void OnPointerClick(PointerEventData eventData)
         {
-            if (!isSelected)
-                Select();
+            if (DeselectWithClick)
+            {
+                if (!isSelected)
+                    Select();
+                else
+                    Deselect();
+            }
             else
-                Deselect();
+            {
+                Select();
+            }
+
         }
 
         public void Select()

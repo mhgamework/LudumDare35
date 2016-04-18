@@ -99,11 +99,18 @@ public class LevelVerifier : MonoBehaviour
                 googlies[i].GooglyMood = googlyMoods[i] ? GooglyEyesController.Mood.HAPPY : GooglyEyesController.Mood.SAD; // mood reflects faults
             }
         }
-        else
+        else if (errorCount != 0)
         {
             for (int i = 0; i < googlyMoods.Length; i++)
             {
                 googlies[i].GooglyMood = GooglyEyesController.Mood.SUPRISED; // bleeps are listening
+            }
+        }
+        else
+        {
+            for (int i = 0; i < googlyMoods.Length; i++)
+            {
+                googlies[i].GooglyMood = GooglyEyesController.Mood.HAPPY;
             }
         }
     }
@@ -129,6 +136,11 @@ public class LevelVerifier : MonoBehaviour
             {
                 googlyMoods[i] = true;
             }
+        }
+
+        if (beat_16 > bleepsMelodyNotes.Length - 1)
+        {
+            return;
         }
 
         var correct = VerifyAtMelodyIndex(beat_16);
@@ -171,7 +183,7 @@ public class LevelVerifier : MonoBehaviour
             if (trackbar.playBleeps)
                 statusText.text = errorCount > 0 ? "Something is still sounding off..." : "Perfect melody!";
             else
-                statusText.text = "Playing reference...";
+                statusText.text = errorCount > 0 ? "Playing reference..." : "Perfect melody!";
 
             succesButton.SetActive(errorCount == 0);
             returnButton.SetActive(errorCount != 0);
