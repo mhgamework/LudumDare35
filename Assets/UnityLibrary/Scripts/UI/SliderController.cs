@@ -181,7 +181,8 @@ namespace UI
             if (changingValueFromSlider || parameter != ObservedFloatParameter)
                 return;
 
-            SetValue(parameter.GetValue());
+            //SetValue(parameter.GetValue());
+            SetValueRelative(parameter.GetValue() * 0.01f); //for ld35, parameters are between 0..100
         }
 
         public void NotifyParameterChanged(AVector3Parameter parameter, Vector3 value)

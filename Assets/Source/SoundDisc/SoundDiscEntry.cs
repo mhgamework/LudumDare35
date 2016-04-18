@@ -15,6 +15,8 @@ public class SoundDiscEntry : MonoBehaviour
 
     private Note currentNote;
 
+    private SoundDiskInstrument instrument;
+
     public void OnPlayed()
     {
         foreach (var visualizer in visualizers)
@@ -29,9 +31,24 @@ public class SoundDiscEntry : MonoBehaviour
         currentNote = note;
     }
 
+    public void SetNoteByIndex(int note_index)
+    {
+        AlterParameter(instrument.GetParameterValueForNote(note_index));
+    }
+
     public Note GetNote()
     {
         return currentNote;
+    }
+
+    public void SetInstrument(SoundDiskInstrument instrument)
+    {
+        this.instrument = instrument;
+    }
+
+    private void AlterParameter(float new_value)
+    {
+        controllingParameter.SetValue(new_value);
     }
 
 }

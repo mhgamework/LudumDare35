@@ -11,6 +11,9 @@ using Assets.Source;
 public class SoundDiscMelody : MonoBehaviour
 {
     [SerializeField]
+    private MelodyData startData = null;
+
+    [SerializeField]
     [Tooltip("Every entry in this array is a controller of a 16th note. Leave null values if nothing must be played.")]
     private SoundDiscEntry[] noteControllers = new SoundDiscEntry[0];
 
@@ -48,6 +51,11 @@ public class SoundDiscMelody : MonoBehaviour
 
         beatEmitter.OnBeatChanged = new BeatEmitter.BeatEventHandler();
         beatEmitter.OnBeatChanged.AddListener(OnBeatChanged);
+
+        if (startData != null)
+        {
+            LoadData(startData);
+        }
     }
 
     /// <summary>
@@ -100,6 +108,23 @@ public class SoundDiscMelody : MonoBehaviour
         for (int i = 0; i < noteControllers.Length; i++)
         {
             melody.SetNote(i, noteControllers[i].GetNote());
+        }
+    }
+
+    private void LoadData(MelodyData data)
+    {
+        var data_notes = data.notes;
+
+        if (data_notes.Length != noteControllers.Length)
+            throw new InvalidOperationException("Melody length not compatible!");
+
+        for (int i = 0; i < data_notes.Length; i++)
+        {
+            var contoller = noteControllers[i];
+            if (contoller == null)
+                continue;
+
+            contoller.SetNoteByIndex(data_notes[i]);
         }
     }
 }
