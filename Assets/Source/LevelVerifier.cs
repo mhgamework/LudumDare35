@@ -13,7 +13,7 @@ public class LevelVerifier : MonoBehaviour
     [SerializeField]
     private TrackbarController trackbar = null;
     [SerializeField]
-    private Text errorCountText = null;
+    private Text statusText = null;
     [SerializeField]
     private Image errorImage = null;
     [SerializeField]
@@ -165,7 +165,11 @@ public class LevelVerifier : MonoBehaviour
                     errorCount++;
             }
 
-            errorCountText.text = errorCount > 0 ? "Something is still sounding off..." : "Perfect melody!";
+            if (trackbar.playBleeps)
+                statusText.text = errorCount > 0 ? "Something is still sounding off..." : "Perfect melody!";
+            else
+                statusText.text = "Playing reference...";
+
             succesButton.SetActive(errorCount == 0);
             returnButton.SetActive(errorCount != 0);
         }

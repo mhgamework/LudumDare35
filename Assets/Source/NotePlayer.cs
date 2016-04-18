@@ -12,7 +12,7 @@ public class NotePlayer : MonoBehaviour
     public MultiVoiceAudioSource audioSource;
 
     [SerializeField]
-    private bool Loop = false;
+    public bool Loop = false;
     [SerializeField]
     [ConditionalHide("Loop")]
     private float LoopBeats = 0f;

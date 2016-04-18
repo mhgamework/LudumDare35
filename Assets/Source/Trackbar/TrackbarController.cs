@@ -26,6 +26,9 @@ public class TrackbarController : MonoBehaviour
     [SerializeField]
     private SoundDiscMelody debugMelody = null;
 
+    [SerializeField]
+    private bool Loop = false;
+
     private List<PooledObject> currentPooledObjects = new List<PooledObject>();
 
     [SerializeField]
@@ -53,6 +56,7 @@ public class TrackbarController : MonoBehaviour
 
         UpdatePause();
         UpdateMute();
+        player.Scrub(0);
     }
 
     public void PlayTarget(bool play_target)
@@ -61,6 +65,7 @@ public class TrackbarController : MonoBehaviour
 
         UpdatePause();
         UpdateMute();
+        player.Scrub(0);
     }
 
     private void UpdatePause()
@@ -88,12 +93,20 @@ public class TrackbarController : MonoBehaviour
         if (displayedBeats <= 0)
             return;
 
+        if (!Loop)
+            player.Loop = false;
+
+        if (!Loop && player.EstimateCurrentBeat() >= displayedBeats - 0.01f)
+        {
+            player.StopPlaying();
+        }
+
         if (Input.GetMouseButton(0) && inputCaptor.HasFocus())
         {
             var mouse_pos = Input.mousePosition;
             var normalized_mouse_pos = Mathf.Clamp01(mouse_pos.x / Screen.width);
             var scrub_beat = displayedBeats * normalized_mouse_pos;
-            player.Scrub(scrub_beat);
+            player.StartPlaying(scrub_beat);
         }
 
         var current_scaling = GetComponent<Transform>().localScale.x;
