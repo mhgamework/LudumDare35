@@ -45,7 +45,7 @@ namespace Assets.Source
 
                     player.tracks.Add(track);
 
-                    //track.Mute = true;
+                    track.Mute = true;
 
                     List<Track> list;
                     if (!tracksForMelody.TryGetValue(m, out list))
@@ -66,23 +66,17 @@ namespace Assets.Source
         {
             if (GlobalState.Instance.LastLevelName == null) return;
 
-            foreach (var l in FindObjectsOfType<Text>().Where(t => t.text == GlobalState.Instance.LastLevelName))
+            var buttons = FindObjectsOfType<SelectLevelButton>().ToArray();
+            foreach (var m in GlobalState.Instance.CompletedMelodies)
             {
-                l.text = "done";
+                if (tracksForMelody.ContainsKey(m))
+                    foreach (var t in tracksForMelody[m])
+                        t.Mute = false;
 
-                foreach (var t in tracksForMelody.Values.SelectMany(t => t))
-                    t.Mute = true;
-
-                foreach (var m in GlobalState.Instance.CompletedMelodies)
-                {
-                    if (tracksForMelody.ContainsKey(m))
-                        foreach (var t in tracksForMelody[m])
-                            t.Mute = false;
-                }
-
-             
-
+                var butt = buttons.FirstOrDefault(b => b.name == m.name);
+                if (butt != null) butt.SetCompleted(true);
             }
+
         }
 
 
