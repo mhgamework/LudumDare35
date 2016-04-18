@@ -94,7 +94,7 @@ public class SoundDiscMelody : MonoBehaviour
 
     private void OnBeatChanged(int beat_number)
     {
-        var index = beat_number % 16;
+        var index = beat_number % noteControllers.Length;
         if (noteControllers.Length < index || noteControllers[index] == null)
             return;
 
@@ -107,7 +107,11 @@ public class SoundDiscMelody : MonoBehaviour
     {
         for (int i = 0; i < noteControllers.Length; i++)
         {
-            melody.SetNote(i, noteControllers[i].GetNote());
+            var controller = noteControllers[i];
+            if (controller == null)
+                melody.SetNote(i, null);
+            else
+                melody.SetNote(i, controller.GetNote());
         }
     }
 

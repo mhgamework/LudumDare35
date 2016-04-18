@@ -110,7 +110,10 @@ public class LevelVerifier : MonoBehaviour
 
     private bool VerifyAtMelodyIndex(int index)
     {
-        return bleepsMelodyNotes.Notes.ElementAt(index) == targetMelody.Notes.ElementAt(index);
+        var bleep_note = bleepsMelodyNotes.Notes.ElementAt(index);
+        var target_note = targetMelody.Notes.ElementAt(index);
+
+        return bleep_note == target_note || (bleep_note == null && target_note == null);
     }
 
     private void OnBeatChanged(int beat)
