@@ -23,6 +23,9 @@ public class LevelSetupHelper : MonoBehaviour
 
     [SerializeField]
     private TrackbarController trackbar = null;
+    [SerializeField]
+    private LevelVerifier verifier = null;
+
 
     private Melody targetMelody;
     private Track targetTrack;
@@ -55,7 +58,7 @@ public class LevelSetupHelper : MonoBehaviour
         trackbar.SetGooglies(bleepsGooglyEyes);
         trackbar.LoadData(bleepsMelody, targetMelody);
 
-
+        verifier.SetData(bleepsMelody, targetMelody, bleepsInstruments, bleepsGooglyEyes);
 
         foreach (var soundDiskInstrument in bleepsInstruments)
         {

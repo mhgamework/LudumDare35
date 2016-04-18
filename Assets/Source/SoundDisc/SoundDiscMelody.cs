@@ -15,7 +15,7 @@ public class SoundDiscMelody : MonoBehaviour
 
     [SerializeField]
     [Tooltip("Every entry in this array is a controller of a 16th note. Leave null values if nothing must be played.")]
-    private SoundDiscEntry[] noteControllers = new SoundDiscEntry[0];
+    public SoundDiscEntry[] noteControllers = new SoundDiscEntry[0];
 
     [SerializeField]
     private SoundDiskInstrument[] soundDiscsInstruments = new SoundDiskInstrument[0];
@@ -24,7 +24,7 @@ public class SoundDiscMelody : MonoBehaviour
     private NotePlayer player = null;
     private Track track;
 
-    private Melody melody;
+    public Melody melody { get; private set; }
 
     private BeatEmitter beatEmitter;
 

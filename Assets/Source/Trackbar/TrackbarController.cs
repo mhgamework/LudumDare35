@@ -34,8 +34,9 @@ public class TrackbarController : MonoBehaviour
     private Melody targetMelody;
 
     private GooglyEyesController[] googlies;
-    private bool playBleeps;
+    public bool playBleeps { get; private set; }
     private bool playTarget;
+
 
     void Start()
     {
@@ -80,15 +81,6 @@ public class TrackbarController : MonoBehaviour
             bleepsMelody.Mute(!playBleeps);
         if (targetMelody != null)
             targetMelody.Mute = !playTarget;
-
-        var mood = !playBleeps ? GooglyEyesController.Mood.SUPRISED : GooglyEyesController.Mood.HAPPY;
-        if (googlies != null)
-        {
-            foreach (var googlyEyesController in googlies)
-            {
-                googlyEyesController.GooglyMood = mood;
-            }
-        }
     }
 
     void Update()
