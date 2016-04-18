@@ -16,7 +16,7 @@ namespace Assets.Source
         private Note[] notes;
 
 
-        private int lowestNoteNum = 0;//60 - 1 * 12;
+        private int lowestNoteNum = 24;//60 - 1 * 12;
         private int numOctaves = 7;
 
         public Instrument()

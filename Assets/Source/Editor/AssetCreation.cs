@@ -21,4 +21,14 @@ public class AssetCreation
         conv.Start();
 
     }
+
+
+    [MenuItem("LD35/GenerateMelodies-Test")]
+    public static void CreateMelodiesTest()
+    {
+        var conv = new MidiToMelodiesConvertor();
+        conv.generate = false;
+        conv.Start();
+
+    }
 }

@@ -28,6 +28,7 @@ public class TrackbarController : MonoBehaviour
 
     private List<PooledObject> currentPooledObjects = new List<PooledObject>();
 
+    [SerializeField]
     private float displayedBeats;
     private SoundDiscMelody bleepsMelody;
     private Melody targetMelody;

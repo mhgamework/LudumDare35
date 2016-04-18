@@ -26,6 +26,8 @@ namespace Assets.Source
         [SerializeField]
         private Instrument kit;
 
+        public bool generate = true;
+
         public void Start()
         {
             Debug.Log("Reading midi");
@@ -43,20 +45,24 @@ namespace Assets.Source
 
 
             EditorUtility.DisplayProgressBar("Generating Melodies", "Reading tracks", 0.5f);
-            var kitTrack = extractMelody(getTrack("Kit"));
-            var wurly1Track = extractMelody(getTrack("Wurly1"));
-            var wurly2Track = extractMelody(getTrack("Wurly2"));
-            var bassTrack = extractMelody(getTrack("FunkMaster"));
+            var kitTrack = writeTrack(extractMelody(getTrack("Kit")),"Kit");
+            var wurly1Track = writeTrack(extractMelody(getTrack("Wurly1")),"Wurly1");
+            var wurly2Track = writeTrack(extractMelody(getTrack("Wurly2")), "Wurly2");
+            var bassTrack = writeTrack(extractMelody(getTrack("FunkMaster")), "FunkMaster");
 
             EditorUtility.DisplayProgressBar("Generating Melodies", "Writing melody assets", 0.7f);
-            saveMelody(kitTrack, 92, 8,"RithmAC");
-            saveMelody(kitTrack, 96, 8, "RithmB");
-            saveMelody(kitTrack, 100, 8, "RithmD");
-            saveMelody(kitTrack, 104, 16 , "HiHat");
-            saveMelody(kitTrack, 108, 32, "CrashAndCo");
+
 
             saveMelody(bassTrack, 92, 16, "BassA");
             saveMelody(bassTrack, 96, 16, "BassB");
+
+            saveMelody(kitTrack, 92, 8, "RithmAC");
+            saveMelody(kitTrack, 96, 8, "RithmB");
+            saveMelody(kitTrack, 100, 8, "RithmD");
+            saveMelody(kitTrack, 104, 16, "HiHat");
+            saveMelody(kitTrack, 108, 32, "CrashAndCo");
+
+            
 
             saveMelody(wurly1Track, 92, 16, "Melody1A");
             saveMelody(wurly1Track, 96, 16, "Melody1B");
@@ -87,13 +93,22 @@ namespace Assets.Source
             //StartCoroutine(play(extractMelody(getTrack("FunkMaster")), funk).GetEnumerator());
         }
 
+        private int[] writeTrack(int[] track,string name)
+        {
+            var dir = Directory.CreateDirectory(@"C:\_Speedy\LudumDare35\Assets\Audio\Soundtrack01\LD35\MIDI");
+            File.WriteAllText(dir.FullName + @"\" + name + ".txt",track.Select((val,i) => i + " - " + val).Aggregate((el,acc) => (el + "\n" + acc)));
+
+            return track;
+
+        }
+
         private void saveMelody(int[] track, int startMeasure, int length, string name)
         {
             var m = ScriptableObject.CreateInstance<MelodyData>();
             m.notes = new int[length];
             for (int i = 0; i < length; i++)
             {
-                var trackIndex = startMeasure*16 + i;
+                var trackIndex = startMeasure * 16 + i;
 
                 int val = -1;
                 if (trackIndex < track.Length)
@@ -101,7 +116,8 @@ namespace Assets.Source
 
                 m.notes[i] = val;
             }
-
+            if (!generate)
+                return;
 
             var path = "Assets/Generated/MelodyData";
 
@@ -159,6 +175,10 @@ namespace Assets.Source
                     return -1;
                 return noteOns[i];
             }).ToArray();
+
+
+           
+
             return melody;
         }
 

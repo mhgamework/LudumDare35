@@ -10,16 +10,12 @@ namespace Assets.Source
 
         public void ToMainMenu()
         {
-            GlobalState.Instance.LastLevelName = SceneManager.GetActiveScene().name;
-            GlobalState.Instance.LastLevelSolved = true;
-            GlobalState.Instance.CompletedMelodies.Add( MelodyData);
-
-
+            GlobalState.Instance.MarkLevelCompleted(SceneManager.GetActiveScene().name, MelodyData);
 
 
             SceneManager.LoadScene("MainMenu", LoadSceneMode.Single);
         }
 
-         
+     
     }
 }

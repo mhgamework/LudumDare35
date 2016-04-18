@@ -77,6 +77,12 @@ public class NotePlayer : MonoBehaviour
         {
             foreach (var note in track.getNotesForInterval(notesSentUntil * timeToBeats, currentTime * timeToBeats))
             {
+                if (note.clip == null)
+                {
+                    // pause/scrub to now/ replay
+                    Scrub(notesSentUntil*bpm/60); //This does the time warp
+                    return;
+                }
                 PlayNote(note);
                 //Debug.Log("Play Note");
             }
