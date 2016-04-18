@@ -1,5 +1,6 @@
 ﻿using UnityEngine;
 using System.Collections;
+using Assets.Source;
 using Assets.UnityLibrary.Scripts.Editor;
 #if UNITY_EDITOR
 using UnityEditor;
@@ -11,5 +12,13 @@ public class AssetCreation
     public static void CreateMelodyData()
     {
         var data = ScriptableObjectUtility.CreateAsset<MelodyData>();
+    }
+
+    [MenuItem("LD35/GenerateMelodies")]
+    public static void CreateMelodies()
+    {
+        var conv = new MidiToMelodiesConvertor();
+        conv.Start();
+
     }
 }
