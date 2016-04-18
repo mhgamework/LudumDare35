@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Globalization;
 using System.Linq;
 using UnityEngine;
 using UnityEngine.Events;
@@ -32,19 +33,19 @@ namespace Assets.Source
         {
             foreach (var t in tracks)
             {
-                for (int iMelody = 0; iMelody < t.melodies.Count; iMelody++)
+                foreach(var startAt in t.startAt.Split(' ').Select(s => float.Parse(s,CultureInfo.InvariantCulture)))
                 {
-                    var m = t.melodies[iMelody];
+                    var m = t.melody;
                     if (m == null) continue;
 
                     var track = new Track();
                     track.melody = Melody.FromNoteMelody2(m, t.instrument);
-                    track.TrackStart = iMelody * 2;
+                    track.TrackStart = startAt * 4;
                     track.TrackEnd = track.TrackStart + track.melody.Length / 4f;
 
                     player.tracks.Add(track);
 
-                    track.Mute = true;
+                    //track.Mute = true;
 
                     List<Track> list;
                     if (!tracksForMelody.TryGetValue(m, out list))
@@ -96,7 +97,9 @@ namespace Assets.Source
         public class InstrumentTrack
         {
             public Instrument instrument;
-            public List<MelodyData> melodies;
+            public MelodyData melody;
+            public string startAt = "";
+            //public List<MelodyData> melodies;
         }
 
 
