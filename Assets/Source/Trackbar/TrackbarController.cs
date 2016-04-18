@@ -96,8 +96,10 @@ public class TrackbarController : MonoBehaviour
             player.Scrub(scrub_beat);
         }
 
-        var scrubber_min_pos = -Screen.width * 0.5f;
-        var scrubber_max_pos = Screen.width * 0.5f;
+        var current_scaling = GetComponent<Transform>().localScale.x;
+
+        var scrubber_min_pos = -Screen.width * 0.5f / current_scaling;
+        var scrubber_max_pos = Screen.width * 0.5f / current_scaling;
 
         scrubberTransform.localPosition = new Vector3(scrubber_min_pos + GetNormalizedScrubberPosition() * (scrubber_max_pos - scrubber_min_pos), scrubberTransform.localPosition.y, scrubberTransform.localPosition.z);
 
