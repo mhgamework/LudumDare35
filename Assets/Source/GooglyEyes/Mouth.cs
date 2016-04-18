@@ -10,7 +10,9 @@ public class Mouth : MonoBehaviour
 
     private float initialScaleHappy;
     private float initialScaleSad;
-    private float happyFactor = 1f; //1 = happy, 0 = sad
+
+    private float happyFactor = 1f;
+    private float sadFactor = 1f;
 
     void Start()
     {
@@ -18,14 +20,28 @@ public class Mouth : MonoBehaviour
         initialScaleSad = sadMouth.localScale.x;
     }
 
-    public void SetIsHappy(bool is_happy)
+    public void SetMood(GooglyEyesController.Mood mood)
     {
-        happyFactor = is_happy ? 1f : 0f;
+        switch (mood)
+        {
+            case GooglyEyesController.Mood.HAPPY:
+                happyFactor = 1f;
+                sadFactor = 0f;
+                break;
+            case GooglyEyesController.Mood.SAD:
+                happyFactor = 0f;
+                sadFactor = 1f;
+                break;
+            case GooglyEyesController.Mood.SUPRISED:
+                happyFactor = 1f;
+                sadFactor = 1f;
+                break;
+        }
     }
 
     void Update()
     {
         happyMouth.localScale = new Vector3(initialScaleHappy, Mathf.Lerp(happyMouth.localScale.y, happyFactor * initialScaleHappy, 0.1f), initialScaleHappy);
-        sadMouth.localScale = new Vector3(initialScaleSad, Mathf.Lerp(sadMouth.localScale.y, (1 - happyFactor) * initialScaleSad, 0.1f), initialScaleSad);
+        sadMouth.localScale = new Vector3(initialScaleSad, Mathf.Lerp(sadMouth.localScale.y, sadFactor * initialScaleSad, 0.1f), initialScaleSad);
     }
 }

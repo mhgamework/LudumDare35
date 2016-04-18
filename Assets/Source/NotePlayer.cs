@@ -21,6 +21,18 @@ public class NotePlayer : MonoBehaviour
 
     public List<Track> tracks = new List<Track>();
 
+    private bool isPlaying = true;
+
+    public void StopPlaying()
+    {
+        isPlaying = false;
+    }
+
+    public void StartPlaying(float beat)
+    {
+        isPlaying = true;
+        Scrub(beat);
+    }
 
     // Use this for initialization
     void Start()
@@ -38,6 +50,9 @@ public class NotePlayer : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
+        if (!isPlaying)
+            return;
+
         //AudioSettings.dspTime
 
         var currentTime = Time.realtimeSinceStartup + playOffset;
@@ -72,17 +87,17 @@ public class NotePlayer : MonoBehaviour
 
         //Debug.Log(EstimateCurrentBeat());
 
-        var notesSentUntilInBeats = notesSentUntil*bpm/60;
+        var notesSentUntilInBeats = notesSentUntil * bpm / 60;
 
-        if (Loop && notesSentUntilInBeats + 0.08f > LoopBeats+ MagicNumberBLeepBLeep)
-            Scrub(notesSentUntilInBeats - LoopBeats- MagicNumberBLeepBLeep);
+        if (Loop && notesSentUntilInBeats + 0.08f > LoopBeats + MagicNumberBLeepBLeep)
+            Scrub(notesSentUntilInBeats - LoopBeats - MagicNumberBLeepBLeep);
     }
 
     public void Scrub(float beat)
     {
         beat += MagicNumberBLeepBLeep;
         playOffset = -Time.realtimeSinceStartup + beat / bpm * 60;
-        
+
         notesSentUntil = Time.realtimeSinceStartup + playOffset;
     }
 

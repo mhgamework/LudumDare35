@@ -62,7 +62,7 @@ namespace UI.GuiElements
                 Deselect();
         }
 
-        private void Select()
+        public void Select()
         {
             if (isSelected)
                 return;
@@ -76,7 +76,7 @@ namespace UI.GuiElements
             ringColorAnimator.StartAnimation(DefaultColor, SelectedColorRing, colorBlendTime);
         }
 
-        private void Deselect()
+        public void Deselect()
         {
             if (!isSelected)
                 return;

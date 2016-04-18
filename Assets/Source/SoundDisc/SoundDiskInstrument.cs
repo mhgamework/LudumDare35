@@ -27,6 +27,8 @@ namespace Assets.Source
 
         private bool isInitialized;
 
+        public bool EnablePlayerSoundFeedback = true;
+
         void Awake()
         {
             foreach (var soundDiscEntry in entries)
@@ -58,7 +60,7 @@ namespace Assets.Source
             if (note == null)
                 return;
 
-            if (note != prevFeedbackedNote)
+            if (EnablePlayerSoundFeedback && note != prevFeedbackedNote)
             {
                 player.audioSource.PlaySample(note.clip); //play note instantly for user feedback
                 prevFeedbackedNote = note;

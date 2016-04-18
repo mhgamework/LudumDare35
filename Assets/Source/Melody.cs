@@ -28,5 +28,18 @@ namespace Assets.Source
         }
 
         public IEnumerable<Note> Notes { get { return notes; } }
+
+        public static void LoadsNotesToMelody(ref Melody to_melody, MelodyData melodyData, Instrument instrument)
+        {
+            to_melody.SetLength(melodyData.notes.Length);
+            for (int i = 0; i < melodyData.notes.Length; i++)
+            {
+                Note note = null;
+                var key = melodyData.notes[i];
+                if (key != -1)
+                    note = instrument.GetNote(key);
+                to_melody.SetNote(i, note);
+            }
+        }
     }
 }

@@ -2,6 +2,7 @@
 using UnityEngine;
 using System.Collections;
 using System.Collections.Generic;
+using Assets.Source;
 using Miscellaneous.ObjectPooling;
 using UI;
 using UnityEngine.UI;
@@ -28,19 +29,65 @@ public class TrackbarController : MonoBehaviour
     private List<PooledObject> currentPooledObjects = new List<PooledObject>();
 
     private float displayedBeats;
+    private SoundDiscMelody bleepsMelody;
+    private Melody targetMelody;
+
+    private GooglyEyesController[] googlies;
+    private bool playBleeps;
+    private bool playTarget;
 
     void Start()
     {
         if (debugMelody != null)
+        {
             VisualizeMelody(debugMelody);
-
-        muteToggle.onValueChanged.AddListener(OnMuteToggleChanged);
-        debugMelody.Mute(muteToggle.isOn);
+            bleepsMelody = debugMelody;
+        }
     }
 
-    private void OnMuteToggleChanged(bool value)
+    public void PlayBleeps(bool play_bleeps)
     {
-        debugMelody.Mute(value);
+        playBleeps = play_bleeps;
+
+        UpdatePause();
+        UpdateMute();
+    }
+
+    public void PlayTarget(bool play_target)
+    {
+        playTarget = play_target;
+
+        UpdatePause();
+        UpdateMute();
+    }
+
+    private void UpdatePause()
+    {
+        if (!playTarget && !playBleeps)
+        {
+            player.StopPlaying();
+        }
+        else
+        {
+            player.StartPlaying(player.EstimateCurrentBeat());
+        }
+    }
+
+    private void UpdateMute()
+    {
+        if (bleepsMelody != null)
+            bleepsMelody.Mute(!playBleeps);
+        if (targetMelody != null)
+            targetMelody.Mute = !playTarget;
+
+        var mood = !playBleeps ? GooglyEyesController.Mood.SUPRISED : GooglyEyesController.Mood.HAPPY;
+        if (googlies != null)
+        {
+            foreach (var googlyEyesController in googlies)
+            {
+                googlyEyesController.GooglyMood = mood;
+            }
+        }
     }
 
     void Update()
@@ -100,5 +147,18 @@ public class TrackbarController : MonoBehaviour
         return normalized;
     }
 
+    public void LoadData(SoundDiscMelody bleeps_melody, Melody target_melody)
+    {
+        bleepsMelody = bleeps_melody;
+        VisualizeMelody(bleeps_melody);
 
+        targetMelody = target_melody;
+
+        UpdateMute();
+    }
+
+    public void SetGooglies(GooglyEyesController[] bleepsGooglyEyes)
+    {
+        googlies = bleepsGooglyEyes;
+    }
 }

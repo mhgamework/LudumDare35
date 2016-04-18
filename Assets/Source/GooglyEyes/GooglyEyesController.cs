@@ -3,6 +3,11 @@ using System.Collections;
 
 public class GooglyEyesController : MonoBehaviour
 {
+    public enum Mood
+    {
+        HAPPY, SAD, SUPRISED
+    }
+
     [SerializeField]
     private Camera theCamera = null;
     [SerializeField]
@@ -12,7 +17,7 @@ public class GooglyEyesController : MonoBehaviour
     [SerializeField]
     private Mouth mouth = null;
 
-    public bool IsHappy = true;
+    public Mood GooglyMood = Mood.HAPPY;
 
     void Start()
     {
@@ -26,6 +31,6 @@ public class GooglyEyesController : MonoBehaviour
         leftEye.SetTarget(mouse_pos);
         rightEye.SetTarget(mouse_pos);
 
-        mouth.SetIsHappy(IsHappy);
+        mouth.SetMood(GooglyMood);
     }
 }

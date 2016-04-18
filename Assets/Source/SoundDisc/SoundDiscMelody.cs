@@ -111,7 +111,7 @@ public class SoundDiscMelody : MonoBehaviour
         }
     }
 
-    private void LoadData(MelodyData data)
+    public void LoadData(MelodyData data)
     {
         var data_notes = data.notes;
 
@@ -127,4 +127,5 @@ public class SoundDiscMelody : MonoBehaviour
             contoller.SetNoteByIndex(data_notes[i]);
         }
     }
+
 }
